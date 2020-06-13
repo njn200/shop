@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.LogsDao">
+  <resultMap id="BaseResultMap" type="com.entity.Logs">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="broswer" jdbcType="VARCHAR" property="broswer" />
+    <result column="loglevel" jdbcType="SMALLINT" property="loglevel" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="operatetime" jdbcType="TIMESTAMP" property="operatetime" />
+    <result column="operatetype" jdbcType="SMALLINT" property="operatetype" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="roleid" jdbcType="INTEGER" property="roleid" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.entity.Logs">
+    <result column="logcontent" jdbcType="LONGVARCHAR" property="logcontent" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List">
+    ID, broswer, loglevel, ip, operatetime, operatetype, userid, roleid
+  </sql>
+  <sql id="Blob_Column_List">
+    logcontent
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from logs
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from logs
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.entity.Logs">
+    insert into logs (ID, broswer, loglevel, 
+      ip, operatetime, operatetype, 
+      userid, roleid, logcontent
+      )
+    values (#{id,jdbcType=INTEGER}, #{broswer,jdbcType=VARCHAR}, #{loglevel,jdbcType=SMALLINT}, 
+      #{ip,jdbcType=VARCHAR}, #{operatetime,jdbcType=TIMESTAMP}, #{operatetype,jdbcType=SMALLINT}, 
+      #{userid,jdbcType=VARCHAR}, #{roleid,jdbcType=INTEGER}, #{logcontent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  
+ 
+  <update id="updateByPrimaryKey" parameterType="com.entity.Logs">
+    update logs
+    set broswer = #{broswer,jdbcType=VARCHAR},
+      loglevel = #{loglevel,jdbcType=SMALLINT},
+      ip = #{ip,jdbcType=VARCHAR},
+      operatetime = #{operatetime,jdbcType=TIMESTAMP},
+      operatetype = #{operatetype,jdbcType=SMALLINT},
+      userid = #{userid,jdbcType=VARCHAR},
+      roleid = #{roleid,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
